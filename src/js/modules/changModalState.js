@@ -5,7 +5,8 @@ const changModalState = (state) => {
           windowWidth = document.querySelectorAll('#width'),
           windowHeight = document.querySelectorAll('#height'),
           windowType = document.querySelectorAll('#view_type'),
-          windowProfile = document.querySelectorAll('.checkbox');
+          windowProfile = document.querySelectorAll('.checkbox'),
+          btnActive = document.querySelector('.popup_calc_button');
 
     validateInputNumbers('#width');
     validateInputNumbers('#height');
@@ -16,10 +17,25 @@ const changModalState = (state) => {
             item.addEventListener(e, () => {
                 switch(item.nodeName) {
                     case 'SPAN' :
-                        console.log('span');
+                        state[prop] = i;
+                        btnActive.setAttribute("data-disabled", false);
                         break
                     case 'INPUT': 
-                        console.log()
+                        if (item.getAttribute('type') === 'checkbox') {
+                            i === 0 ? state[prop] = 'Cold' : state[prop] = 'Warm';
+                            elem.forEach((box, j) => {
+                                box.checked = false;
+                                if (i == j) {
+                                    box.checked = true;
+                                } 
+                            });
+                        } else {
+                            state[prop] = item.value;
+                        }
+                        break;
+                    case "SELECT":
+                        state[prop] = item.value;
+                        break;
                 }
                 console.log(state);
             })
